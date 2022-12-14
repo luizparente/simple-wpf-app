@@ -12,13 +12,14 @@
         Width="800">
 	<Grid>
 		<Grid.RowDefinitions>
+			<RowDefinition Height="20"/>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="30"/>
 		</Grid.RowDefinitions>
 
-		<Views:Login Grid.Row="0" />
+		<Views:NavigationOutlet Grid.Row="1" />
 		<Label Content="Copyright Luiz Parente, 2022" 
-               Grid.Row="1"
+               Grid.Row="2"
                Foreground="Gray"/>
 	</Grid>
 </Window>

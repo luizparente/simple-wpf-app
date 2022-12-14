@@ -3,6 +3,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Services.Authentication;
+using SimpleWpfApp.Commands;
+using SimpleWpfApp.Factories;
+using SimpleWpfApp.Factories.Interfaces;
+using SimpleWpfApp.Utilities;
 using SimpleWpfApp.ViewModels;
 using System.Windows;
 
@@ -14,10 +18,11 @@ namespace SimpleWpfApp {
 			AppHost = Host.CreateDefaultBuilder()
 				.ConfigureServices(services => {
 					services.AddSingleton<MainWindow>();
-					
-					ConfigureViewModels(services);
+
 					ConfigureServices(services);
 					ConfigureRepositories(services);
+					ConfigureCommands(services);
+					ConfigureViewModels(services);
 				})
 				.ConfigureAppConfiguration((hostingContext, configuration) => {
 					IHostEnvironment env = hostingContext.HostingEnvironment;
@@ -29,12 +34,19 @@ namespace SimpleWpfApp {
 				.Build();
 		}
 
+		private void ConfigureCommands(IServiceCollection services) {
+			services.AddSingleton<SignInCommand>();
+		}
+
 		private static void ConfigureViewModels(IServiceCollection services) {
 			services.AddSingleton<LoginViewModel>();
+			services.AddSingleton<HomeViewModel>();
 		}
 
 		private void ConfigureServices(IServiceCollection services) {
 			services.AddSingleton<ILoginMethodService, LoginMethodService>();
+			services.AddSingleton<IAuthenticationService, AuthenticationService>();
+			services.AddSingleton<IHostedServiceFactory, HostedServiceFactory>();
 		}
 
 		private void ConfigureRepositories(IServiceCollection services) {
@@ -46,6 +58,8 @@ namespace SimpleWpfApp {
 
 			var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
 			mainWindow.Show();
+
+			Navigator.Instance.BeginNavigation();
 		}
 
 		protected override async void OnExit(ExitEventArgs e) {

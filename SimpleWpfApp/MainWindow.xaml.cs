@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using SimpleWpfApp.Utilities;
+using SimpleWpfApp.Views.Interfaces;
+using System.Windows;
 
 namespace SimpleWpfApp {
 	/// <summary>

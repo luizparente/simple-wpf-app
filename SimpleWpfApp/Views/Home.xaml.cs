@@ -3,8 +3,8 @@ using SimpleWpfApp.Views.Interfaces;
 using System.Windows.Controls;
 
 namespace SimpleWpfApp.Views {
-	public partial class Login : UserControl, IView {
-		public Login() {
+	public partial class Home : UserControl, IView {
+		public Home() {
 			InitializeComponent();
 
 			ViewModelLocator.Instance.WireUpViewModel(this);

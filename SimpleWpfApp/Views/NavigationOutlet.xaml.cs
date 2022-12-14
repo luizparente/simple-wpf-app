@@ -3,11 +3,11 @@ using SimpleWpfApp.Views.Interfaces;
 using System.Windows.Controls;
 
 namespace SimpleWpfApp.Views {
-	public partial class Login : UserControl, IView {
-		public Login() {
+	public partial class NavigationOutlet : UserControl, INavigationOutlet {
+		public NavigationOutlet() {
 			InitializeComponent();
 
-			ViewModelLocator.Instance.WireUpViewModel(this);
+			Navigator.Instance.SetNavigationOutlet(this);
 		}
 	}
 }

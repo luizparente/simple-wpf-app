@@ -2,6 +2,7 @@
 using Domain.Models.Authentication;
 using Domain.Models.Presentation;
 using SimpleWpfApp.Commands;
+using SimpleWpfApp.Factories.Interfaces;
 using SimpleWpfApp.ViewModels.Abstract;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace SimpleWpfApp.ViewModels {
 
 		#region SERVICES
 		private readonly ILoginMethodService _loginMethodService;
+		private readonly IHostedServiceFactory _hostedServiceFactory;
 
 		#endregion
 
@@ -103,10 +105,13 @@ namespace SimpleWpfApp.ViewModels {
 
 		#endregion
 
-		public LoginViewModel(ILoginMethodService loginMethodService) {
-			this.SignInCommand = new SignInCommand();
-			this.InitDataCommand = new Commands.RoutedCommand(async (object obj) => await InitDataAsync(obj), (object obj) => true);
+		public LoginViewModel(ILoginMethodService loginMethodService,
+							  IHostedServiceFactory hostedServiceFactory) {
 			this._loginMethodService = loginMethodService;
+			this._hostedServiceFactory = hostedServiceFactory;
+
+			this.SignInCommand = this._hostedServiceFactory.Create<SignInCommand>();
+			this.InitDataCommand = new Commands.RoutedCommand(async (object obj) => await InitDataAsync(obj), (object obj) => true);
 		}
 
 		public async Task InitDataAsync(object obj) {
