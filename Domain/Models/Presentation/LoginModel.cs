@@ -1,6 +1,6 @@
-﻿using Example01_DataBinding.Models.Presentation;
+﻿using Domain.Models.Authentication;
 
-namespace Example01_DataBinding.Models.Authentication {
+namespace Domain.Models.Presentation {
 	public class LoginModel {
 		public string Username { get; set; }
 		public string Password { get; set; }

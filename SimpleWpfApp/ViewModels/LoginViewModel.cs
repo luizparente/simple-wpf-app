@@ -1,8 +1,10 @@
-﻿using Example01_DataBinding.Models.Authentication;
-using Example01_DataBinding.Models.Presentation;
+﻿using Application.Interfaces;
+using Domain.Models.Authentication;
+using Domain.Models.Presentation;
 using SimpleWpfApp.Commands;
 using SimpleWpfApp.ViewModels.Abstract;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace SimpleWpfApp.ViewModels {
@@ -13,7 +15,12 @@ namespace SimpleWpfApp.ViewModels {
 		private string _loginStatus;
 		private LoginMethod _selectedLoginMethod;
 		private IEnumerable<LoginMethod> _loginMethodOptions;
-		private LoginModel _loginModel;
+		private LoginModel _LoginModel;
+
+		#endregion
+
+		#region SERVICES
+		private readonly ILoginMethodService _loginMethodService;
 
 		#endregion
 
@@ -21,10 +28,10 @@ namespace SimpleWpfApp.ViewModels {
 
 		public LoginModel LoginModel {
 			get {
-				return this._loginModel;
+				return this._LoginModel;
 			}
 			set {
-				this._loginModel = value;
+				this._LoginModel = value;
 
 				this.Notify("LoginModel");
 			}
@@ -96,19 +103,15 @@ namespace SimpleWpfApp.ViewModels {
 
 		#endregion
 
-		public LoginViewModel() {
+		public LoginViewModel(ILoginMethodService loginMethodService) {
 			this.SignInCommand = new SignInCommand();
-			this.InitDataCommand = new Example01_DataBinding.Commands.RoutedCommand(InitData, (object obj) => true);
+			this.InitDataCommand = new Commands.RoutedCommand(async (object obj) => await InitDataAsync(obj), (object obj) => true);
+			this._loginMethodService = loginMethodService;
 		}
 
-		public void InitData(object obj) {
+		public async Task InitDataAsync(object obj) {
 			this.LoginModel = new LoginModel();
-			this.LoginMethodOptions = new List<LoginMethod>() {
-				new LoginMethod() { ID = 0, Option = "2FA" },
-				new LoginMethod() { ID = 1, Option = "Active Directory" },
-				new LoginMethod() { ID = 2, Option = "Default" },
-				new LoginMethod() { ID = 3, Option = "Token" },
-			};
+			this.LoginMethodOptions = await this._loginMethodService.GetAllAsync();
 		}
 	}
 }

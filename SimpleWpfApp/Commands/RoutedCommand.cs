@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Example01_DataBinding.Commands {
+namespace SimpleWpfApp.Commands {
 	public class RoutedCommand : ICommand {
 		private Action<object> _execute;
 		private Predicate<object> _canExecute;

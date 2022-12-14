@@ -1,4 +1,4 @@
-﻿using Example01_DataBinding.Models.Authentication;
+﻿using Domain.Models.Presentation;
 using System;
 using System.Windows;
 using System.Windows.Input;

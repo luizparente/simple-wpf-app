@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+			 xmlns:vm="clr-namespace:SimpleWpfApp.ViewModels"
              mc:Ignorable="d">
 	<!--This is how a command is bound to a control that does not have the
 		Command property:
@@ -17,6 +18,11 @@
 			<i:InvokeCommandAction Command="{Binding InitDataCommand}"/>
 		</i:EventTrigger>
 	</i:Interaction.Triggers>
+
+	<!--Alternative way to define unparameterized ViewModels-->
+	<!--<UserControl.DataContext>
+		<vm:LoginViewModel/>
+	</UserControl.DataContext>-->
 
 	<Border BorderBrush="#FFC0C0C0" 
             BorderThickness="0.5" 

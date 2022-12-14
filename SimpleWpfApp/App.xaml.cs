@@ -1,17 +1,21 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Application.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Services.Authentication;
+using SimpleWpfApp.ViewModels;
 using System.Windows;
 
 namespace SimpleWpfApp {
-	public partial class App : Application {
-		private static IHost host;
+	public partial class App : System.Windows.Application {
+		public static IHost AppHost { get; set; }
 
 		public App() {
-			host = Host.CreateDefaultBuilder()
+			AppHost = Host.CreateDefaultBuilder()
 				.ConfigureServices(services => {
 					services.AddSingleton<MainWindow>();
-
+					
+					ConfigureViewModels(services);
 					ConfigureServices(services);
 					ConfigureRepositories(services);
 				})
@@ -25,8 +29,12 @@ namespace SimpleWpfApp {
 				.Build();
 		}
 
+		private static void ConfigureViewModels(IServiceCollection services) {
+			services.AddSingleton<LoginViewModel>();
+		}
+
 		private void ConfigureServices(IServiceCollection services) {
-			
+			services.AddSingleton<ILoginMethodService, LoginMethodService>();
 		}
 
 		private void ConfigureRepositories(IServiceCollection services) {
@@ -34,14 +42,14 @@ namespace SimpleWpfApp {
 		}
 
 		protected async void OnStartup(object sender, StartupEventArgs e) {
-			await host?.StartAsync();
+			await AppHost?.StartAsync();
 
-			var mainWindow = host.Services.GetRequiredService<MainWindow>();
+			var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
 			mainWindow.Show();
 		}
 
 		protected override async void OnExit(ExitEventArgs e) {
-			await host?.StopAsync();
+			await AppHost?.StopAsync();
 		
 			base.OnExit(e);
 		}
