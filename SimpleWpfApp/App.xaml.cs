@@ -7,6 +7,7 @@ using SimpleWpfApp.Commands;
 using SimpleWpfApp.Factories;
 using SimpleWpfApp.Factories.Interfaces;
 using SimpleWpfApp.Utilities;
+using SimpleWpfApp.Utilities.Interfaces;
 using SimpleWpfApp.ViewModels;
 using System.Windows;
 
@@ -47,6 +48,7 @@ namespace SimpleWpfApp {
 			services.AddSingleton<ILoginMethodService, LoginMethodService>();
 			services.AddSingleton<IAuthenticationService, AuthenticationService>();
 			services.AddSingleton<IHostedServiceFactory, HostedServiceFactory>();
+			services.AddSingleton<IDialogService, DialogService>();
 		}
 
 		private void ConfigureRepositories(IServiceCollection services) {

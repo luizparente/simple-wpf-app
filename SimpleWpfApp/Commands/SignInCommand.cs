@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Domain.Models.Presentation;
 using SimpleWpfApp.Utilities;
+using SimpleWpfApp.Utilities.Interfaces;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
@@ -9,11 +10,14 @@ using System.Windows.Input;
 namespace SimpleWpfApp.Commands {
 	public class SignInCommand : ICommand {
 		private readonly IAuthenticationService _authenticationService;
+		private readonly IDialogService _dialogService;
 
 		public event EventHandler CanExecuteChanged;
 
-		public SignInCommand(IAuthenticationService authenticationService) {
+		public SignInCommand(IAuthenticationService authenticationService,
+							 IDialogService dialogService) {
 			this._authenticationService = authenticationService;
+			this._dialogService = dialogService;
 		}
 
 		public bool CanExecute(object parameter) {
@@ -33,7 +37,7 @@ namespace SimpleWpfApp.Commands {
 					if (success)
 						Navigator.Instance.Navigate("home");
 					else
-						MessageBox.Show("Invalid credentials. Please try again.", "Login error", MessageBoxButton.OK, MessageBoxImage.Error);
+						this._dialogService.ShowDialog("Invalid credentials. Please try again.", "Login error", IDialogService.DialogType.Error);
 				});
 			}
 			catch (Exception e) {
