@@ -1,0 +1,24 @@
+﻿<Window x:Class="SimpleWpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimpleWpfApp" xmlns:Views="clr-namespace:SimpleWpfApp.Views"
+		mc:Ignorable="d"
+        Title="Sample WPF App" 
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Height="450" 
+        Width="800">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="30"/>
+		</Grid.RowDefinitions>
+
+		<Views:Login Grid.Row="0" />
+		<Label Content="Copyright Luiz Parente, 2022" 
+               Grid.Row="1"
+               Foreground="Gray"/>
+	</Grid>
+</Window>
