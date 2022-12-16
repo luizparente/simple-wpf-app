@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SimpleWpfApp" xmlns:Views="clr-namespace:SimpleWpfApp.Views"
 		mc:Ignorable="d"
-        Title="Sample WPF App" 
+        Title="Simple WPF App" 
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         Height="450" 
