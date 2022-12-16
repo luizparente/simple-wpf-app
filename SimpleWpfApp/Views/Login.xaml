@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+			 xmlns:utilities="clr-namespace:SimpleWpfApp.Utilities"
 			 xmlns:vm="clr-namespace:SimpleWpfApp.ViewModels"
              mc:Ignorable="d">
 	<!--This is how a command is bound to a control that does not have the
@@ -36,7 +37,9 @@
 			<TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 0 5"/>
 
 			<Label Content="Password"/>
-			<TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 0 5"/>
+			<PasswordBox utilities:PasswordBoxHelper.BindPassword="True" 
+						 utilities:PasswordBoxHelper.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+						 Margin="0 0 0 5"/>
 
 			<Label Content="Method"/>
 			<ComboBox Margin="0 0 0 20"
