@@ -13,10 +13,10 @@ namespace SimpleWpfApp.ViewModels {
 		#region FIELDS
 		private string _username;
 		private string _password;
-		private string _loginStatus;
 		private LoginMethod _selectedLoginMethod;
 		private IEnumerable<LoginMethod> _loginMethodOptions;
 		private LoginModel _LoginModel;
+		private bool _canLogin;
 
 		#endregion
 
@@ -47,6 +47,8 @@ namespace SimpleWpfApp.ViewModels {
 				this._username = value;
 				this.LoginModel.Username = value;
 
+				this.UpdateCanLogin();
+
 				this.Notify("Username");
 			}
 		}
@@ -58,6 +60,8 @@ namespace SimpleWpfApp.ViewModels {
 			set {
 				this._password = value;
 				this.LoginModel.Password = value;
+
+				this.UpdateCanLogin();
 
 				this.Notify("Password");
 			}
@@ -71,7 +75,20 @@ namespace SimpleWpfApp.ViewModels {
 				this._selectedLoginMethod = value;
 				this.LoginModel.Method = value;
 
+				this.UpdateCanLogin();
+
 				this.Notify("SelectedLoginMethod");
+			}
+		}
+
+		public bool CanLogin {
+			get {
+				return this._canLogin;
+			}
+			set {
+				this._canLogin = value;
+
+				this.Notify("CanLogin");
 			}
 		}
 
@@ -83,17 +100,6 @@ namespace SimpleWpfApp.ViewModels {
 				this._loginMethodOptions = value;
 
 				this.Notify("LoginMethodOptions");
-			}
-		}
-
-		public string LoginStatus {
-			get {
-				return this._loginStatus;
-			}
-			set {
-				this._loginStatus = value;
-
-				this.Notify("LoginStatus");
 			}
 		}
 
@@ -117,6 +123,12 @@ namespace SimpleWpfApp.ViewModels {
 		public async Task InitDataAsync(object obj) {
 			this.LoginModel = new LoginModel();
 			this.LoginMethodOptions = await this._loginMethodService.GetAllAsync();
+		}
+
+		private void UpdateCanLogin() { 
+			this.CanLogin = !string.IsNullOrWhiteSpace(this.Username)
+						    && !string.IsNullOrWhiteSpace(this.Password)
+						    && this.SelectedLoginMethod != null;
 		}
 	}
 }
