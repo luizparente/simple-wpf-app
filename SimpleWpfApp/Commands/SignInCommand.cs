@@ -30,6 +30,11 @@ namespace SimpleWpfApp.Commands {
 			string password = login.Password;
 			string method = login.Method?.Option;
 
+			if (string.IsNullOrWhiteSpace(method)) {
+				this._dialogService.ShowDialog("Login method required.", "Error", IDialogService.DialogType.Error);
+				return;
+			}
+
 			try {
 				Task.Run(async () => {
 					bool success = await this._authenticationService.AuthenticateAsync(username, password, method);
