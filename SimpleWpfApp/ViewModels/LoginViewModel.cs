@@ -1,5 +1,5 @@
 ﻿using Application.Interfaces;
-using Domain.Models.Authentication;
+using Domain.Models.Domain;
 using Domain.Models.Presentation;
 using SimpleWpfApp.Commands;
 using SimpleWpfApp.Factories.Interfaces;
@@ -8,8 +8,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace SimpleWpfApp.ViewModels {
-	public class LoginViewModel : BaseViewModel {
+namespace SimpleWpfApp.ViewModels
+{
+    public class LoginViewModel : BaseViewModel {
 		#region FIELDS
 		private string _username;
 		private string _password;
@@ -117,12 +118,12 @@ namespace SimpleWpfApp.ViewModels {
 			this._hostedServiceFactory = hostedServiceFactory;
 
 			this.SignInCommand = this._hostedServiceFactory.Create<SignInCommand>();
-			this.InitDataCommand = new Commands.RoutedCommand(async (object obj) => await InitDataAsync(obj), (object obj) => true);
+			this.InitDataCommand = new Commands.RelayedCommand(async (object obj) => await InitDataAsync(obj), (object obj) => true);
 		}
 
 		public async Task InitDataAsync(object obj) {
 			this.LoginModel = new LoginModel();
-			this.LoginMethodOptions = await this._loginMethodService.GetAllAsync();
+			this.LoginMethodOptions = await this._loginMethodService.GetAsync();
 		}
 
 		private void UpdateCanLogin() { 

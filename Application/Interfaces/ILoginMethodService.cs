@@ -1,6 +1,7 @@
-﻿using Domain.Models.Authentication;
+﻿using Domain.Models.Domain;
 
-namespace Application.Interfaces {
-	public interface ILoginMethodService : IService<LoginMethod> {
+namespace Application.Interfaces
+{
+    public interface ILoginMethodService : IService<LoginMethod> {
 	}
 }

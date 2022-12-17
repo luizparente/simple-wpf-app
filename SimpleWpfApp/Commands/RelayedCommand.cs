@@ -2,14 +2,14 @@
 using System.Windows.Input;
 
 namespace SimpleWpfApp.Commands {
-	public class RoutedCommand : ICommand {
+	public class RelayedCommand : ICommand {
 		private Action<object> _execute;
 		private Predicate<object> _canExecute;
 
 		public event EventHandler CanExecuteChanged;
 
-		public RoutedCommand(Action<object> execute,
-							 Predicate<object> canExecute) {
+		public RelayedCommand(Action<object> execute,
+							  Predicate<object> canExecute) {
 			this._canExecute = canExecute;
 			this._execute = execute;
 		}

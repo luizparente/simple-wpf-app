@@ -17,7 +17,7 @@
 			<RowDefinition Height="30"/>
 		</Grid.RowDefinitions>
 
-		<Views:NavigationOutlet Grid.Row="1" />
+		<Views:NavigationOutlet Grid.Row="1" Margin="10"/>
 		<Label Content="Copyright Luiz Parente, 2022" 
                Grid.Row="2"
                Foreground="Gray"/>

@@ -2,7 +2,10 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Services.Authentication;
+using Repositories;
+using Repositories.Data;
+using Services;
+using Services.Repositories.Interfaces;
 using SimpleWpfApp.Commands;
 using SimpleWpfApp.Factories;
 using SimpleWpfApp.Factories.Interfaces;
@@ -11,13 +14,16 @@ using SimpleWpfApp.Utilities.Interfaces;
 using SimpleWpfApp.ViewModels;
 using System.Windows;
 
-namespace SimpleWpfApp {
-	public partial class App : System.Windows.Application {
+namespace SimpleWpfApp
+{
+    public partial class App : System.Windows.Application {
 		public static IHost AppHost { get; set; }
 
 		public App() {
 			AppHost = Host.CreateDefaultBuilder()
 				.ConfigureServices(services => {
+					services.AddSingleton<FakeDataContext>();
+
 					services.AddSingleton<MainWindow>();
 
 					ConfigureServices(services);
@@ -49,10 +55,13 @@ namespace SimpleWpfApp {
 			services.AddSingleton<IAuthenticationService, AuthenticationService>();
 			services.AddSingleton<IHostedServiceFactory, HostedServiceFactory>();
 			services.AddSingleton<IDialogService, DialogService>();
+			services.AddSingleton<ILoginMethodService, LoginMethodService>();
+			services.AddSingleton<IThingService, ThingService>();
 		}
 
 		private void ConfigureRepositories(IServiceCollection services) {
-			
+			services.AddSingleton<ILoginMethodRepository, LoginMethodRepository>();
+			services.AddSingleton<IThingRepository, ThingRepository>();
 		}
 
 		protected async void OnStartup(object sender, StartupEventArgs e) {
