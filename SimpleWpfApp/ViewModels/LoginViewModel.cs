@@ -116,12 +116,11 @@ namespace SimpleWpfApp.ViewModels
 							  IHostedServiceFactory hostedServiceFactory) {
 			this._loginMethodService = loginMethodService;
 			this._hostedServiceFactory = hostedServiceFactory;
-
 			this.SignInCommand = this._hostedServiceFactory.Create<SignInCommand>();
-			this.InitDataCommand = new Commands.RelayedCommand(async (object obj) => await InitDataAsync(obj), (object obj) => true);
+			this.InitDataCommand = new Commands.RelayedCommand(async _ => await InitDataAsync(), _ => true);
 		}
 
-		public async Task InitDataAsync(object obj) {
+		public async Task InitDataAsync() {
 			this.LoginModel = new LoginModel();
 			this.LoginMethodOptions = await this._loginMethodService.GetAsync();
 		}

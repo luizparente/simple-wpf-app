@@ -42,12 +42,13 @@ namespace SimpleWpfApp
 		}
 
 		private void ConfigureCommands(IServiceCollection services) {
-			services.AddSingleton<SignInCommand>();
+			services.AddTransient<SignInCommand>();
+			services.AddTransient<SignOutCommand>();
 		}
 
 		private static void ConfigureViewModels(IServiceCollection services) {
-			services.AddSingleton<LoginViewModel>();
-			services.AddSingleton<HomeViewModel>();
+			services.AddTransient<LoginViewModel>();
+			services.AddTransient<HomeViewModel>();
 		}
 
 		private void ConfigureServices(IServiceCollection services) {

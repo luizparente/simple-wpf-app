@@ -12,11 +12,11 @@
 		}
 
 		public static bool operator ==(LoginMethod a, LoginMethod b) {
-			return a?.LoginMethodGuid == a?.LoginMethodGuid;
+			return a?.LoginMethodGuid == b?.LoginMethodGuid;
 		}
 
 		public static bool operator !=(LoginMethod a, LoginMethod b) {
-			return a?.LoginMethodGuid == a?.LoginMethodGuid;
+			return a?.LoginMethodGuid != b?.LoginMethodGuid;
 		}
 
 		public override bool Equals(object obj) {

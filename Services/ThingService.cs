@@ -33,6 +33,8 @@ namespace Services {
 		}
 
 		public async Task UpdateAsync(Thing obj) {
+			obj.UpdatedOn = DateTime.Now;	
+
 			await this._thingRepository.UpdateAsync(obj);
 		}
 	}

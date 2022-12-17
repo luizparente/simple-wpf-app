@@ -4,7 +4,6 @@ using SimpleWpfApp.Utilities;
 using SimpleWpfApp.Utilities.Interfaces;
 using System;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 
 namespace SimpleWpfApp.Commands {
