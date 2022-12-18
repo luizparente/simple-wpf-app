@@ -15,5 +15,7 @@
 		<TextBlock Text="Thank you for downloading this project." Margin="0 0 0 10"/>
 		<TextBlock TextWrapping="Wrap" Margin="0 0 0 10" Text="Please bear in mind that this is not a design pattern recommendation. Rather, it is just a simple application that aims to cover some of the main techniques used when implementing a WPF app with MVVM. This is not a claim that the architectural structure utilized in this project is the most optimized in the world for a project of this, or any other, size." />
 		<TextBlock Text="For more samples like this, check out github.com/luizparente."/>
+
+		<Button Content="Close" Command="{Binding CloseCommand}" Margin="0 10 0 0"/>
 	</StackPanel>
 </UserControl>

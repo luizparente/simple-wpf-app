@@ -40,6 +40,9 @@ namespace SimpleWpfApp.Utilities {
 		}
 
 		public void NavigateInNewWindow(string route, string windowName, string title, bool isResizeable, bool isTopMost, int newWindowWidth = 992, int newWindowHeight = 540) {
+			if (this._windows.ContainsKey(windowName))
+				throw new Exception($"A window '{windowName}' already exists.");
+
 			if (!this._routes.ContainsKey(route?.ToLower()))
 				throw new Exception($"Unknown route '{route}'.");
 
@@ -50,20 +53,23 @@ namespace SimpleWpfApp.Utilities {
 					Width = newWindowWidth,
 					Height = newWindowHeight,
 					WindowStartupLocation = WindowStartupLocation.CenterScreen,
-					Topmost= isTopMost,
+					Topmost = isTopMost,
 					ResizeMode = isResizeable ? ResizeMode.CanResize : ResizeMode.CanMinimize
 				};
 
+				window.Closed += OnCloseWindow;
 				window.Content = Activator.CreateInstance(this._routes[route]);
 
-				if (!this._windows.ContainsKey(window.Name))
-					this._windows.Add(window.Name, window);
+				this._windows.Add(windowName, window);
 
 				window.Show();
 			});
 		}
 
 		public void CloseWindow(string windowName) {
+			if (!this._windows.ContainsKey(windowName))
+				throw new Exception($"Window '{windowName}' not found.");
+
 			var window = this._windows[windowName];
 			window.Close();
 		}
@@ -78,6 +84,11 @@ namespace SimpleWpfApp.Utilities {
 			this._routes.Add("login", typeof(Login));
 			this._routes.Add("home", typeof(Home));
 			this._routes.Add("welcome", typeof(WelcomePopUp));
+		}
+
+		private void OnCloseWindow(object sender, EventArgs e) {
+			var window = (Window)sender;
+			this._windows.Remove(window.Name);
 		}
 	}
 }

@@ -4,7 +4,9 @@ using Domain.Models.Presentation;
 using SimpleWpfApp.Commands;
 using SimpleWpfApp.Factories.Interfaces;
 using SimpleWpfApp.Utilities;
+using SimpleWpfApp.Utilities.Interfaces;
 using SimpleWpfApp.ViewModels.Abstract;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -25,6 +27,7 @@ namespace SimpleWpfApp.ViewModels
 		#region SERVICES
 		private readonly ILoginMethodService _loginMethodService;
 		private readonly IHostedServiceFactory _hostedServiceFactory;
+		private readonly IDialogService _dialogService;
 
 		#endregion
 
@@ -114,18 +117,26 @@ namespace SimpleWpfApp.ViewModels
 		#endregion
 
 		public LoginViewModel(ILoginMethodService loginMethodService,
-							  IHostedServiceFactory hostedServiceFactory) {
+							  IHostedServiceFactory hostedServiceFactory,
+							  IDialogService dialogService) {
 			this._loginMethodService = loginMethodService;
 			this._hostedServiceFactory = hostedServiceFactory;
+			this._dialogService = dialogService;
 			this.SignInCommand = this._hostedServiceFactory.Create<SignInCommand>();
 			this.InitDataCommand = new RelayedCommand(async _ => await InitDataAsync(), _ => true);
 		}
 
 		public async Task InitDataAsync() {
 			this.LoginModel = new LoginModel();
-			this.LoginMethodOptions = await this._loginMethodService.GetAsync();
 
-			Navigator.Instance.NavigateInNewWindow("welcome", "welcomepopup", "Welcome!", false, true, 500, 250);
+			try {
+				this.LoginMethodOptions = await this._loginMethodService.GetAsync();
+			}
+			catch (Exception e) {
+				this._dialogService.ShowDialog(e);
+			}
+
+			Navigator.Instance.NavigateInNewWindow("welcome", "welcomepopup", "Welcome!", false, true, 500, 260);
 		}
 
 		private void UpdateCanLogin() { 

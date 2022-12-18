@@ -1,4 +1,5 @@
 ﻿using SimpleWpfApp.Utilities.Interfaces;
+using System;
 using System.Windows;
 
 namespace SimpleWpfApp.Utilities {
@@ -55,6 +56,14 @@ namespace SimpleWpfApp.Utilities {
 			var result = MessageBox.Show(message, caption, buttons, icon);
 
 			return result.ToString();
+		}
+
+		public void ShowDialog(Exception exception) {
+			string message = $"{exception.Message} " +
+							 $"{exception.InnerException?.Message} {Environment.NewLine}" +
+							 $"{exception.StackTrace}";
+
+			MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 		}
 	}
 }

@@ -1,7 +1,9 @@
 ﻿using Application.Interfaces;
 using Domain.Models.Domain;
 using SimpleWpfApp.Commands;
+using SimpleWpfApp.Utilities.Interfaces;
 using SimpleWpfApp.ViewModels.Abstract;
+using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -19,6 +21,7 @@ namespace SimpleWpfApp.ViewModels {
 
 		#region SERVICES
 		private readonly IThingService _thingService;
+		private readonly IDialogService _dialogService;
 
 		#endregion
 
@@ -90,8 +93,11 @@ namespace SimpleWpfApp.ViewModels {
 
 		#endregion
 
-		public HomeViewModel(IThingService thingService, SignOutCommand signOutCommand) {
+		public HomeViewModel(IThingService thingService, 
+							 IDialogService dialogService,
+							 SignOutCommand signOutCommand) {
 			this._thingService = thingService;
+			this._dialogService = dialogService;
 			this.SignOutCommand = signOutCommand;
 			this.InitDataCommand = new RelayedCommand(async _ => await InitDataAsync(), _ => true);
 			this.CreateCommand = new RelayedCommand(Create, _ => true);
@@ -101,7 +107,14 @@ namespace SimpleWpfApp.ViewModels {
 
 		public async Task InitDataAsync() {
 			GetNewThing();
-			this.Things = new ObservableCollection<Thing>(await this._thingService.GetAsync());
+			
+			try {
+				var things = await this._thingService.GetAsync();
+				this.Things = new ObservableCollection<Thing>(things);
+			}
+			catch (Exception e) {
+				this._dialogService.ShowDialog(e);
+			}
 		}
 
 		private void GetNewThing() {
@@ -113,23 +126,35 @@ namespace SimpleWpfApp.ViewModels {
 			if (this.NewThing == null)
 				return;
 
-			Task.Run(async () => {
-				await this._thingService.CreateAsync(this.NewThing);
-				this.Things = new ObservableCollection<Thing>(await this._thingService.GetAsync());
-				this.Reset(null);
-			});
+			try {
+				Task.Run(async () => {
+					await this._thingService.CreateAsync(this.NewThing);
+					var things = await this._thingService.GetAsync();
+					this.Things = new ObservableCollection<Thing>(things);
+					this.Reset(null);
+				});
+			}
+			catch (Exception e) {
+				this._dialogService.ShowDialog(e);
+			}
 		}
 
 		private void Update(object obj) {
 			if (this.SelectedThing == null)
 				return;
 
-			Task.Run(async () => {
-				await this._thingService.UpdateAsync(this.SelectedThing);
-				this.Things = new ObservableCollection<Thing>(await this._thingService.GetAsync());
-				string idBuffer = this.SelectedThing.ThingGuid;
-				this.SelectedThing = await this._thingService.GetAsync(idBuffer);
-			});
+			try {
+				Task.Run(async () => {
+					await this._thingService.UpdateAsync(this.SelectedThing);
+					var things = await this._thingService.GetAsync();
+					this.Things = new ObservableCollection<Thing>(things);
+					string idBuffer = this.SelectedThing.ThingGuid;
+					this.SelectedThing = await this._thingService.GetAsync(idBuffer);
+				});
+			}
+			catch (Exception e) {
+				this._dialogService.ShowDialog(e);
+			}
 		}
 
 		private void CheckCanCreate() {
