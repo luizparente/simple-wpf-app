@@ -3,6 +3,7 @@ using Domain.Models.Domain;
 using Domain.Models.Presentation;
 using SimpleWpfApp.Commands;
 using SimpleWpfApp.Factories.Interfaces;
+using SimpleWpfApp.Utilities;
 using SimpleWpfApp.ViewModels.Abstract;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -117,12 +118,14 @@ namespace SimpleWpfApp.ViewModels
 			this._loginMethodService = loginMethodService;
 			this._hostedServiceFactory = hostedServiceFactory;
 			this.SignInCommand = this._hostedServiceFactory.Create<SignInCommand>();
-			this.InitDataCommand = new Commands.RelayedCommand(async _ => await InitDataAsync(), _ => true);
+			this.InitDataCommand = new RelayedCommand(async _ => await InitDataAsync(), _ => true);
 		}
 
 		public async Task InitDataAsync() {
 			this.LoginModel = new LoginModel();
 			this.LoginMethodOptions = await this._loginMethodService.GetAsync();
+
+			Navigator.Instance.NavigateInNewWindow("welcome", "welcomepopup", "Welcome!", false, true, 500, 250);
 		}
 
 		private void UpdateCanLogin() { 

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SimpleWpfApp" xmlns:Views="clr-namespace:SimpleWpfApp.Views"
 		mc:Ignorable="d"
         Title="Simple WPF App" 
-        ResizeMode="NoResize"
+        ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
         Height="540" 
         Width="992">

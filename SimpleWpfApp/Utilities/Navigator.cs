@@ -39,29 +39,26 @@ namespace SimpleWpfApp.Utilities {
 			});
 		}
 
-		public void Navigate(string route, NavigationMode mode) {
+		public void NavigateInNewWindow(string route, string windowName, string title, bool isResizeable, bool isTopMost, int newWindowWidth = 992, int newWindowHeight = 540) {
 			if (!this._routes.ContainsKey(route?.ToLower()))
 				throw new Exception($"Unknown route '{route}'.");
 
 			System.Windows.Application.Current.Dispatcher.Invoke(() => {
-				var window = new Window() { Name = route };
-				window.Content = Activator.CreateInstance(this._routes[route]);
-				window.Show();
-			});
-		}
-
-		public void Navigate(string route, int newWindowWidth, int newWindowHeight) {
-			if (!this._routes.ContainsKey(route?.ToLower()))
-				throw new Exception($"Unknown route '{route}'.");
-
-			System.Windows.Application.Current.Dispatcher.Invoke(() => {
-				var window = new Window() { 
-					Name = route,
+				var window = new Window() {
+					Name = windowName,
+					Title = title,
 					Width = newWindowWidth,
-					Height = newWindowHeight
+					Height = newWindowHeight,
+					WindowStartupLocation = WindowStartupLocation.CenterScreen,
+					Topmost= isTopMost,
+					ResizeMode = isResizeable ? ResizeMode.CanResize : ResizeMode.CanMinimize
 				};
+
 				window.Content = Activator.CreateInstance(this._routes[route]);
-				this._windows.Add(window.Name, window);
+
+				if (!this._windows.ContainsKey(window.Name))
+					this._windows.Add(window.Name, window);
+
 				window.Show();
 			});
 		}
@@ -80,11 +77,7 @@ namespace SimpleWpfApp.Utilities {
 
 			this._routes.Add("login", typeof(Login));
 			this._routes.Add("home", typeof(Home));
-		}
-
-		public enum NavigationMode {
-			SameWindow,
-			NewWindow
+			this._routes.Add("welcome", typeof(WelcomePopUp));
 		}
 	}
 }
