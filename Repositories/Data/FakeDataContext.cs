@@ -10,11 +10,11 @@ namespace Repositories.Data
 
 		public FakeDataContext() {
 			this.Things = new List<Thing>() { 
-				new Thing() { SomeProperty = "Some thing" },
-				new Thing() { SomeProperty = "Something else" },
-				new Thing() { SomeProperty = "Another thing" },
-				new Thing() { SomeProperty = "Yet another thing" },
-				new Thing() { SomeProperty = "Last thing" },
+				new Thing() { SomeProperty = "Some thing", Type = ThingType.Option2 },
+				new Thing() { SomeProperty = "Something else", Type = ThingType.Option1 },
+				new Thing() { SomeProperty = "Another thing", Type = ThingType.Option3 },
+				new Thing() { SomeProperty = "Yet another thing", Type = ThingType.Option2 },
+				new Thing() { SomeProperty = "Last thing", Type = ThingType.Option3 },
 			};
 
 			this.LoginMethods = new List<LoginMethod>() {

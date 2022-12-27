@@ -7,6 +7,7 @@ namespace Domain.Models.Domain {
 		public event Action OnUpdate;
 
 		public string ThingGuid { get; set; }
+		public ThingType Type { get; set; }
 		public string SomeProperty { 
 			get {
 				return this._someProperty;

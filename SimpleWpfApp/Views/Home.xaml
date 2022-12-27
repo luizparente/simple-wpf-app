@@ -16,7 +16,8 @@
 	<!--Setting up resources-->
 	<UserControl.Resources>
 		<converters:NullToHiddenConverter x:Key="NullToHiddenConverter"/>
-		<converters:NullToVisibleConverter x:Key="NullToVisibleConverter"/>
+		<converters:NotNullToVisibleConverter x:Key="NotNullToVisibleConverter"/>
+		<converters:EnumToRadioCheckedConverter x:Key="EnumToRadioCheckedConverter"/>
 	</UserControl.Resources>
 
 	<StackPanel>
@@ -96,9 +97,18 @@
 						- {Binding Path=PathToPropertyInTheSameBoundedObject, RelativeSource={RelativeSource Self}}
 				
 					-->
-					<DataGridTextColumn Header="Some Property" Binding="{Binding SomeProperty, Mode=OneTime}" Width="3*"/>
-					<DataGridTextColumn Header="Created On" Binding="{Binding CreatedOn, Mode=OneTime}" Width="*"/>
-					<DataGridTextColumn Header="Updated On" Binding="{Binding UpdatedOn, Mode=OneTime}" Width="*"/>
+					<DataGridTextColumn Header="Some Property" 
+										Width="3*"
+										Binding="{Binding SomeProperty, Mode=OneTime}"/>
+					<DataGridTextColumn Header="Type"
+										Width="*"
+										Binding="{Binding Type, Mode=OneTime}"/>
+					<DataGridTextColumn Header="Created On" 
+										Width="*"
+										Binding="{Binding CreatedOn, Mode=OneTime}"/>
+					<DataGridTextColumn Header="Updated On" 
+										Width="*"
+										Binding="{Binding UpdatedOn, Mode=OneTime}"/>
 				</DataGrid.Columns>
 			</DataGrid>
 		</ScrollViewer>
@@ -117,6 +127,25 @@
 					<Label Content="Some Property:"/>
 					<TextBox Text="{Binding NewThing.SomeProperty, UpdateSourceTrigger=PropertyChanged}"/>
 
+					<StackPanel Orientation="Horizontal" Margin="0 15 0 0" HorizontalAlignment="Center">
+						<RadioButton Content="Option1" 
+									 IsChecked="{Binding NewThing.Type, 
+												 UpdateSourceTrigger=PropertyChanged, 
+												 Converter={StaticResource ResourceKey=EnumToRadioCheckedConverter}, 
+												 ConverterParameter=0}"/>
+						<RadioButton Content="Option2" 
+									 Margin="20 0 20 0"
+									 IsChecked="{Binding NewThing.Type, 
+												 UpdateSourceTrigger=PropertyChanged, 
+												 Converter={StaticResource ResourceKey=EnumToRadioCheckedConverter}, 
+												 ConverterParameter=1}"/>
+						<RadioButton Content="Option3" 
+									 IsChecked="{Binding NewThing.Type, 
+												 UpdateSourceTrigger=PropertyChanged, 
+												 Converter={StaticResource ResourceKey=EnumToRadioCheckedConverter}, 
+												 ConverterParameter=2}"/>
+					</StackPanel>
+
 					<Button Content="Create" Command="{Binding CreateCommand}" IsEnabled="{Binding CanCreate}" Margin="0 20 0 0"/>
 					<Button Content="Reset" Command="{Binding ResetCommand}" Margin="0 10 0 0"/>
 				</StackPanel>
@@ -131,6 +160,25 @@
 						<Label Content="Some Property:"/>
 						<TextBox Text="{Binding SelectedThing.SomeProperty, UpdateSourceTrigger=PropertyChanged}"/>
 
+						<StackPanel Orientation="Horizontal" Margin="0 15 0 0" HorizontalAlignment="Center">
+							<RadioButton Content="Option1" 
+										 IsChecked="{Binding SelectedThing.Type, 
+													 UpdateSourceTrigger=PropertyChanged, 
+													 Converter={StaticResource ResourceKey=EnumToRadioCheckedConverter}, 
+													 ConverterParameter=0}"/>
+							<RadioButton Content="Option2" 
+										 Margin="20 0 20 0"
+										 IsChecked="{Binding SelectedThing.Type, 
+													 UpdateSourceTrigger=PropertyChanged, 
+													 Converter={StaticResource ResourceKey=EnumToRadioCheckedConverter}, 
+													 ConverterParameter=1}" />
+							<RadioButton Content="Option3" 
+										 IsChecked="{Binding SelectedThing.Type, 
+													 UpdateSourceTrigger=PropertyChanged, 
+													 Converter={StaticResource ResourceKey=EnumToRadioCheckedConverter}, 
+													 ConverterParameter=2}"/>
+						</StackPanel>
+
 						<Label Content="Created On:"/>
 						<TextBox Text="{Binding SelectedThing.CreatedOn}" IsReadOnly="True" IsEnabled="False"/>
 
@@ -141,7 +189,7 @@
 					</StackPanel>
 
 					<Label Content="Select a thing to view details." 
-						   Visibility="{Binding SelectedThing, Converter={StaticResource NullToVisibleConverter}}"/>
+						   Visibility="{Binding SelectedThing, Converter={StaticResource NotNullToVisibleConverter}}"/>
 				</StackPanel>
 			</GroupBox>
 		</Grid>

@@ -8,7 +8,7 @@
         Title="Simple WPF App" 
         ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
-        Height="540" 
+        Height="570" 
         Width="992">
 	<Grid>
 		<Grid.RowDefinitions>
