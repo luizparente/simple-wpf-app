@@ -1,13 +1,14 @@
 ﻿using Application.Interfaces;
 using Domain.Models.Presentation;
+using SimpleWpfApp.Commands.Interfaces;
 using SimpleWpfApp.Utilities;
 using SimpleWpfApp.Utilities.Interfaces;
 using System;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace SimpleWpfApp.Commands {
-	public class SignInCommand : ICommand {
+	public class SignInCommand : IInjectableCommand {
+		private Predicate<object> _canExecute;
 		private readonly IAuthenticationService _authenticationService;
 		private readonly IDialogService _dialogService;
 
@@ -20,7 +21,11 @@ namespace SimpleWpfApp.Commands {
 		}
 
 		public bool CanExecute(object parameter) {
-			return true;
+			if (this._canExecute == null) {
+				return false;
+			}
+
+			return this._canExecute(parameter);
 		}
 
 		public void Execute(object parameter) {
@@ -47,6 +52,14 @@ namespace SimpleWpfApp.Commands {
 			catch (Exception e) {
 				throw;
 			}
+		}
+
+		public void SetCanExecute(Predicate<object> canExecute) {
+			this._canExecute = canExecute;
+		}
+
+		public void TriggerCanExecuteChanged() {
+			this.CanExecuteChanged?.Invoke(this, new EventArgs());
 		}
 	}
 }

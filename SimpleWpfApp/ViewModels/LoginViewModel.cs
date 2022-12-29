@@ -2,7 +2,7 @@
 using Domain.Models.Domain;
 using Domain.Models.Presentation;
 using SimpleWpfApp.Commands;
-using SimpleWpfApp.Factories.Interfaces;
+using SimpleWpfApp.Commands.Interfaces;
 using SimpleWpfApp.Utilities;
 using SimpleWpfApp.Utilities.Interfaces;
 using SimpleWpfApp.ViewModels.Abstract;
@@ -11,22 +11,19 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace SimpleWpfApp.ViewModels
-{
-    public class LoginViewModel : BaseViewModel {
+namespace SimpleWpfApp.ViewModels {
+	public class LoginViewModel : BaseViewModel {
 		#region FIELDS
 		private string _username;
 		private string _password;
 		private LoginMethod _selectedLoginMethod;
 		private IEnumerable<LoginMethod> _loginMethodOptions;
 		private LoginModel _LoginModel;
-		private bool _canLogin;
 
 		#endregion
 
 		#region SERVICES
 		private readonly ILoginMethodService _loginMethodService;
-		private readonly IHostedServiceFactory _hostedServiceFactory;
 		private readonly IDialogService _dialogService;
 
 		#endregion
@@ -52,7 +49,7 @@ namespace SimpleWpfApp.ViewModels
 				this._username = value;
 				this.LoginModel.Username = value;
 
-				this.UpdateCanLogin();
+				this.RefreshCanLogin();
 
 				this.Notify("Username");
 			}
@@ -66,7 +63,7 @@ namespace SimpleWpfApp.ViewModels
 				this._password = value;
 				this.LoginModel.Password = value;
 
-				this.UpdateCanLogin();
+				this.RefreshCanLogin();
 
 				this.Notify("Password");
 			}
@@ -80,20 +77,9 @@ namespace SimpleWpfApp.ViewModels
 				this._selectedLoginMethod = value;
 				this.LoginModel.Method = value;
 
-				this.UpdateCanLogin();
+				this.RefreshCanLogin();
 
 				this.Notify("SelectedLoginMethod");
-			}
-		}
-
-		public bool CanLogin {
-			get {
-				return this._canLogin;
-			}
-			set {
-				this._canLogin = value;
-
-				this.Notify("CanLogin");
 			}
 		}
 
@@ -111,19 +97,20 @@ namespace SimpleWpfApp.ViewModels
 		#endregion
 
 		#region COMMANDS
-		public ICommand SignInCommand { get; set; }
+		public IInjectableCommand SignInCommand { get; set; }
 		public ICommand InitDataCommand { get; set; }
 
 		#endregion
 
 		public LoginViewModel(ILoginMethodService loginMethodService,
-							  IHostedServiceFactory hostedServiceFactory,
-							  IDialogService dialogService) {
+							  IDialogService dialogService,
+							  SignInCommand signInCommand) {
 			this._loginMethodService = loginMethodService;
-			this._hostedServiceFactory = hostedServiceFactory;
 			this._dialogService = dialogService;
-			this.SignInCommand = this._hostedServiceFactory.Create<SignInCommand>();
+
 			this.InitDataCommand = new RelayedCommand(async _ => await InitDataAsync(), _ => true);
+			this.SignInCommand = signInCommand;
+			this.SignInCommand.SetCanExecute(_ => CanLogin());
 		}
 
 		public async Task InitDataAsync() {
@@ -139,10 +126,14 @@ namespace SimpleWpfApp.ViewModels
 			Navigator.Instance.NavigateInNewWindow("welcome", "welcomepopup", "Welcome!", false, true, 500, 260);
 		}
 
-		private void UpdateCanLogin() { 
-			this.CanLogin = !string.IsNullOrWhiteSpace(this.Username)
-						    && !string.IsNullOrWhiteSpace(this.Password)
-						    && this.SelectedLoginMethod != null;
+		private bool CanLogin() {
+			return !string.IsNullOrWhiteSpace(this.Username)
+					&& !string.IsNullOrWhiteSpace(this.Password)
+					&& this.SelectedLoginMethod != null;
+		}
+
+		private void RefreshCanLogin() {
+			this.SignInCommand.TriggerCanExecuteChanged();
 		}
 	}
 }

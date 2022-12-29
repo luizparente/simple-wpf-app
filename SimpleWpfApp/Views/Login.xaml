@@ -47,8 +47,7 @@
 
 			<Button Content="Sign In" 
                     Command="{Binding SignInCommand}"
-                    CommandParameter="{Binding LoginModel}"
-					IsEnabled="{Binding CanLogin}"/>
+                    CommandParameter="{Binding LoginModel}"/>
 		</StackPanel>
 	</Border>
 </UserControl>
