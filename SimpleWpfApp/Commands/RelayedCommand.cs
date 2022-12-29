@@ -1,8 +1,8 @@
-﻿using System;
-using System.Windows.Input;
+﻿using SimpleWpfApp.Commands.Interfaces;
+using System;
 
 namespace SimpleWpfApp.Commands {
-	public class RelayedCommand : ICommand {
+	public class RelayedCommand : IRelayedCommand {
 		private Action<object> _execute;
 		private Predicate<object> _canExecute;
 
@@ -20,6 +20,10 @@ namespace SimpleWpfApp.Commands {
 
 		public void Execute(object parameter) {
 			this._execute(parameter);
+		}
+
+		public void TriggerCanExecuteChanged() {
+			this.CanExecuteChanged?.Invoke(this, new EventArgs());
 		}
 	}
 }

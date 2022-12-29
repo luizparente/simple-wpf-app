@@ -78,9 +78,9 @@ namespace SimpleWpfApp.ViewModels {
 			this._loginMethodService = loginMethodService;
 			this._dialogService = dialogService;
 
-			this.InitDataCommand = new RelayedCommand(async _ => await InitDataAsync(), _ => true);
+			this.InitDataCommand = new RelayedCommand(async _ => await this.InitDataAsync(), _ => true);
 			this.SignInCommand = signInCommand;
-			this.SignInCommand.SetCanExecute(_ => CanLogin());
+			this.SignInCommand.SetCanExecute(_ => this.CanLogin());
 		}
 
 		public async Task InitDataAsync() {
