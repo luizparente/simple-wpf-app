@@ -179,12 +179,6 @@
 													 ConverterParameter=2}"/>
 						</StackPanel>
 
-						<Label Content="Created On:"/>
-						<TextBox Text="{Binding SelectedThing.CreatedOn}" IsReadOnly="True" IsEnabled="False"/>
-
-						<Label Content="Updated On:"/>
-						<TextBox Text="{Binding SelectedThing.UpdatedOn}" IsReadOnly="True" IsEnabled="False"/>
-
 						<Button Content="Update" Command="{Binding UpdateCommand}" IsEnabled="{Binding CanUpdate}" Margin="0 20 0 0"/>
 					</StackPanel>
 

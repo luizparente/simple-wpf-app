@@ -12,7 +12,7 @@ namespace SimpleWpfApp.ViewModels.Abstract {
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 		}
 
-		protected void SetProperty<T>(ref T field, T value, [CallerMemberName] string property = null) {
+		protected void SetAndNotify<T>(ref T field, T value, [CallerMemberName] string property = null) {
 			if (Object.Equals(field, value))
 				return;
 

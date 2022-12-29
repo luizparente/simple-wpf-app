@@ -27,59 +27,31 @@ namespace SimpleWpfApp.ViewModels {
 
 		#region PROPERTIES
 		public ObservableCollection<Thing> Things {
-			get {
-				return this._things;
-			}
-			set {
-				this._things = value;
-
-				this.Notify("Things");
-			}
+			get => this._things;
+			set => this.SetAndNotify(ref this._things, value);
 		}
 
 		public Thing SelectedThing {
-			get {
-				return this._selectedThing;
-			}
+			get => this._selectedThing;
 			set {
-				this._selectedThing = value;
+				this.SetAndNotify(ref this._selectedThing, value);
 				this.CheckCanUpdate();
-
-				this.Notify("SelectedThing");
 			}
 		}
 
 		public Thing NewThing {
-			get {
-				return this._newThing;
-			}
-			set {
-				this._newThing = value;
-
-				this.Notify("NewThing");
-			}
+			get => this._newThing;
+			set => this.SetAndNotify(ref this._newThing, value);
 		}
 
 		public bool CanCreate { 
-			get {
-				return this._canCreate;
-			}
-			set {
-				this._canCreate = value;
-
-				this.Notify("CanCreate");
-			}
+			get => this._canCreate; 
+			set => this.SetAndNotify(ref this._canCreate, value);
 		}
 
 		public bool CanUpdate {
-			get {
-				return this._canUpdate;
-			}
-			set {
-				this._canUpdate = value;
-
-				this.Notify("CanUpdate");
-			}
+			get => this._canUpdate; 
+			set => this.SetAndNotify(ref this._canUpdate, value);
 		}
 
 		#endregion
