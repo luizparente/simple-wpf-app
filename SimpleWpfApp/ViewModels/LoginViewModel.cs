@@ -18,7 +18,7 @@ namespace SimpleWpfApp.ViewModels {
 		private string _password;
 		private LoginMethod _selectedLoginMethod;
 		private IEnumerable<LoginMethod> _loginMethodOptions;
-		private LoginModel _LoginModel;
+		private LoginModel _loginModel;
 
 		#endregion
 
@@ -31,67 +31,43 @@ namespace SimpleWpfApp.ViewModels {
 		#region PROPERTIES
 
 		public LoginModel LoginModel {
-			get {
-				return this._LoginModel;
-			}
-			set {
-				this._LoginModel = value;
-
-				this.Notify("LoginModel");
-			}
+			get => this._loginModel;
+			set => this.SetProperty(ref this._loginModel, value);
 		}
 
 		public string Username {
-			get {
-				return this._username;
-			}
+			get => this._username;
 			set {
-				this._username = value;
+				this.SetProperty(ref this._username, value);
 				this.LoginModel.Username = value;
 
 				this.RefreshCanLogin();
-
-				this.Notify("Username");
 			}
 		}
 
 		public string Password {
-			get {
-				return this._password;
-			}
+			get => this._password;
 			set {
-				this._password = value;
+				this.SetProperty(ref this._password, value);
 				this.LoginModel.Password = value;
 
 				this.RefreshCanLogin();
-
-				this.Notify("Password");
 			}
 		}
 
 		public LoginMethod SelectedLoginMethod {
-			get {
-				return this._selectedLoginMethod;
-			}
+			get => this._selectedLoginMethod;
 			set {
-				this._selectedLoginMethod = value;
+				this.SetProperty(ref this._selectedLoginMethod, value);
 				this.LoginModel.Method = value;
 
 				this.RefreshCanLogin();
-
-				this.Notify("SelectedLoginMethod");
 			}
 		}
 
 		public IEnumerable<LoginMethod> LoginMethodOptions {
-			get {
-				return this._loginMethodOptions;
-			}
-			set {
-				this._loginMethodOptions = value;
-
-				this.Notify("LoginMethodOptions");
-			}
+			get => this._loginMethodOptions;
+			set => this.SetProperty(ref this._loginMethodOptions, value);
 		}
 
 		#endregion
