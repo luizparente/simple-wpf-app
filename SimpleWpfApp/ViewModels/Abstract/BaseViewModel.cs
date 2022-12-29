@@ -21,5 +21,11 @@ namespace SimpleWpfApp.ViewModels.Abstract {
 			if (this.PropertyChanged != null)
 				this.PropertyChanged(this, new PropertyChangedEventArgs(property));
 		}
+
+		protected void SetAndNotify<T>(ref T field, T value, Action callback, [CallerMemberName] string property = null) {
+			this.SetAndNotify(ref field, value, property);
+
+			callback.Invoke();
+		}
 	}
 }

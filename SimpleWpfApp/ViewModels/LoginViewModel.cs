@@ -38,30 +38,24 @@ namespace SimpleWpfApp.ViewModels {
 		public string Username {
 			get => this._username;
 			set {
-				this.SetAndNotify(ref this._username, value);
+				this.SetAndNotify(ref this._username, value, this.RefreshCanLogin);
 				this.LoginModel.Username = value;
-
-				this.RefreshCanLogin();
 			}
 		}
 
 		public string Password {
 			get => this._password;
 			set {
-				this.SetAndNotify(ref this._password, value);
+				this.SetAndNotify(ref this._password, value, this.RefreshCanLogin);
 				this.LoginModel.Password = value;
-
-				this.RefreshCanLogin();
 			}
 		}
 
 		public LoginMethod SelectedLoginMethod {
 			get => this._selectedLoginMethod;
 			set {
-				this.SetAndNotify(ref this._selectedLoginMethod, value);
+				this.SetAndNotify(ref this._selectedLoginMethod, value, this.RefreshCanLogin);
 				this.LoginModel.Method = value;
-
-				this.RefreshCanLogin();
 			}
 		}
 

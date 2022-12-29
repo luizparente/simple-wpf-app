@@ -33,10 +33,7 @@ namespace SimpleWpfApp.ViewModels {
 
 		public Thing SelectedThing {
 			get => this._selectedThing;
-			set {
-				this.SetAndNotify(ref this._selectedThing, value);
-				this.CheckCanUpdate();
-			}
+			set => this.SetAndNotify(ref this._selectedThing, value, this.CheckCanUpdate);
 		}
 
 		public Thing NewThing {
